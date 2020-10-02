@@ -1,0 +1,28 @@
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/arusha.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/dodoma.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/dar-es-salaam.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/geita.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/iringa.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/kagera.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/katavi.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/kigoma.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/kilimanjaro.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/lindi.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/manyara.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/mara.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/mbeya.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/morogoro.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/mtwara.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/mwanza.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/njombe.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/pwani.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/rukwa.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/ruvuma.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/shinyanga.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/simiyu.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/singida.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/songwe.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/tabora.csv' delimiter ',' CSV HEADER;
+COPY general (region, regioncode, district, districtcode, ward, wardcode, street, places) from '/posts/tanga.csv' delimiter ',' CSV HEADER;
+
+UPDATE general SET country_id = 210;
