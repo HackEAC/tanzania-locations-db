@@ -106,8 +106,8 @@ $$ LANGUAGE plpgsql;
 WITH 
   distinct_streets AS (
     SELECT 
-      DISTINCT(street), 
-      wardcode,
+      DISTINCT(wardcode), 
+      street,
       regioncode,
       districtcode,
       country_id,
@@ -131,8 +131,8 @@ SELECT * FROM places_save_streets;
 WITH
   distinct_places AS (
     SELECT 
-      DISTINCT(places), 
-      wardcode,
+      DISTINCT(wardcode), 
+      places,
       regioncode,
       districtcode,
       country_id,
