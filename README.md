@@ -60,7 +60,7 @@ than just one country.
 
 This data was obtained from [TCRA POSTCODE
 LIST](https://www.tcra.go.tz/index.php/publication-and-statistics/postcode-list)
-I'm by no means fully responsible for it's accuracy.
+we are by no means fully responsible for it's accuracy.
 
 
 ### Credits
@@ -74,4 +74,4 @@ a few friends whom I promised to credit.
 
 3. Robert Mnama
 
-4. TCRA
+4. And of course [TCRA](https://tcra.go.tz) for publishing this information.
