@@ -68,7 +68,7 @@ we are by no means fully responsible for it's accuracy.
 Process of data standardization was the most complicated and I was helped by
 a few friends whom I promised to credit.
 
-1. Isuja Mzee wa Kazi
+1. Natali Isuja
 
 2. Joe Master
 
