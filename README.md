@@ -56,12 +56,6 @@ than just one country.
 
 4. API for this will be awesome!
 
-### Reference
-
-This data was obtained from [TCRA POSTCODE
-LIST](https://www.tcra.go.tz/index.php/publication-and-statistics/postcode-list)
-we are by no means fully responsible for it's accuracy.
-
 
 ### Credits
 
@@ -73,5 +67,3 @@ a few friends whom I promised to credit.
 2. Joe Master
 
 3. Robert Mnama
-
-4. And of course [TCRA](https://tcra.go.tz) for publishing this information.
