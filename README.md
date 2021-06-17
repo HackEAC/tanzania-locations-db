@@ -36,23 +36,22 @@ this is necessary for postgresql `Copy` command to function as expected [refer t
 
   - Extract all Tanzania locations `\i extract.sql`
 
-
 7. Done!
 
 
 ### Room for improvements
+- [ ] Create custom IDs to reference tables in (Regions, Districts & Wards) Status: 🗓 🔥
 
-1. Locations (Region, District & Wards) need to use a different auto-incrementing ID field and not it's area code.
+- [ ] This whole process can easily be automated. Status: 🤔
 
-The area code should stay as is (in it's field), but there should be
-a different ID field this will help reduce mixing the IDs once we get broader
-than just one country.
+**Current Ideas**
+  - Write a Bash script to automate this  
+  - Contenarization as suggested in [this issue by Olomi](https://github.com/HackEAC/tanzania-locations-db/issues/2)
 
-2. This whole process can easily be automated.
-
-3. At least we should start with `general.sql` as I'm really not proud of it.
-
-4. API for this will be awesome!
+- [x] API for this will be awesome. Status: 🕶
+  - [Mtaa - Python Package](https://github.com/Kalebu/mtaa) 😎
+  - [Mtaa API - Python API](https://github.com/HackEAC/mtaaAPI/) based on Mtaa 😎
+  - [Locations API - NestJs & Postgresql](https://github.com/HackEAC/locations-API) based on this rep☻
 
 
 ### Credits
