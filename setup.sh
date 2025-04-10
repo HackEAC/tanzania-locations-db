@@ -32,6 +32,6 @@ psql -U "$DB_USER" -d "$DB_NAME" -c "UPDATE general SET country_id = 210;"
 
 # Run extract logic
 echo "🧠 Running extract logic..."
-psql -U "$DB_USER" -d "$DB_NAME" -f extract.sql
+psql -P pager=off -U "$DB_USER" -d "$DB_NAME" -f extract.sql
 
 echo "✅ All done!"
