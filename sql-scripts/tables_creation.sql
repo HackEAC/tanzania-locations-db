@@ -35,10 +35,7 @@ CREATE TABLE general (
 CREATE TABLE regions (
   region_name text,
   region_code integer NOT NULL,
-  watcher_count integer,
-  view_count integer,
   general_locations_id integer REFERENCES general (id),
-  properties_count integer,
   country_id integer REFERENCES countries (id),
   PRIMARY KEY(region_code)
 );
@@ -46,10 +43,7 @@ CREATE TABLE regions (
 CREATE TABLE districts (
   district_name text,
   district_code integer NOT NULL,
-  watcher_count integer,
-  view_count integer,
   general_locations_id integer REFERENCES general (id),
-  properties_count integer,
   region_id integer REFERENCES regions (region_code),
   country_id integer REFERENCES countries (id),
   PRIMARY KEY(district_code)
@@ -61,8 +55,6 @@ CREATE TABLE wards (
   district_id integer REFERENCES districts (district_code),
   region_id integer REFERENCES regions (region_code),
   country_id integer REFERENCES countries (id),
-  view_count integer,
-  properties_count integer,
   general_locations_id integer REFERENCES general (id),
   PRIMARY KEY(ward_code)
 );
@@ -70,8 +62,6 @@ CREATE TABLE wards (
 CREATE TABLE places (
   id SERIAL PRIMARY KEY,
   place_name text,
-  view_count integer,
-  properties_count integer,
   ward_id integer,
   district_id integer,
   region_id integer,
