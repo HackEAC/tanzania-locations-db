@@ -1,4 +1,4 @@
-FROM postgis/postgis:15-3.3
+FROM postgres:17.4
 
 RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
 
