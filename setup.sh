@@ -1,37 +1,46 @@
 #!/bin/bash
+set -e
 
-DB_NAME="locations"
-DB_USER="postgres"
+DB_NAME="${POSTGRES_DB:-locations}"
+DB_USER="${POSTGRES_USER:-postgres}"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DATA_DIR="$SCRIPT_DIR/location-files"
+DATA_DIR="/location_files"
 
 echo "🌍 Setting up Tanzania Locations DB..."
 
-# Create database if not exists
-createdb --encoding UTF8 --owner "$DB_USER" "$DB_NAME"
-
-# Run table schema creation (make sure it defines the `general` table)
-psql -U "$DB_USER" -d "$DB_NAME" -f tables_creation.sql
-
-# Run counties query to get list of all countries
-psql -U "$DB_USER" -d "$DB_NAME" -f countries.sql
-
-# Import CSVs into the `general` table
-echo "📄 Importing CSVs into the database ..."
-
-for csv_file in "$DATA_DIR"/*.csv; do
-  region_file=$(basename "$csv_file")
-  echo "  ➕ Importing $region_file..."
-  psql -U "$DB_USER" -d "$DB_NAME" -c "\copy general (region, regioncode, district, districtcode, ward, wardcode, street, places) FROM '$csv_file' DELIMITER ',' CSV HEADER"
+echo "Waiting for DB to be ready..."
+until pg_isready -U "$DB_USER"; do
+  sleep 1
 done
 
-# Update foreign key
+echo "Creating database..."
+createdb --encoding UTF8 --owner "$DB_USER" "$DB_NAME" || echo "⚠️  Database already exists, skipping creation."
+
+echo "Creating tables..."
+psql -U "$DB_USER" -d "$DB_NAME" -f /sql_scripts/tables_creation.sql
+
+echo "Inserting countries..."
+psql -U "$DB_USER" -d "$DB_NAME" -f /sql_scripts/countries.sql
+
+echo "📄 Importing CSVs from: $DATA_DIR"
+
+shopt -s nullglob
+CSV_FILES=("$DATA_DIR"/*.csv)
+if [ ${#CSV_FILES[@]} -eq 0 ]; then
+  echo "❌ No CSV files found in $DATA_DIR"
+  exit 1
+fi
+
+for csv_file in "${CSV_FILES[@]}"; do
+  region_file=$(basename "$csv_file")
+  echo "  ➕ Importing $region_file..."
+  psql -U "$DB_USER" -d "$DB_NAME" -c "\copy general (region, regioncode, district, districtcode, ward, wardcode, street, places) FROM '$csv_file' WITH (FORMAT csv, HEADER true)"
+done
+
 echo "🛠 Updating country_id..."
 psql -U "$DB_USER" -d "$DB_NAME" -c "UPDATE general SET country_id = 210;"
 
-# Run extract logic
-echo "🧠 Running extract logic..."
-psql -P pager=off -U "$DB_USER" -d "$DB_NAME" -f extract.sql
+echo "🧠 Running extract.sql..."
+psql -U "$DB_USER" -d "$DB_NAME" -f /sql_scripts/extract.sql
 
-echo "✅ All done!"
+echo "✅ Tanzania Locations DB setup complete!"
