@@ -28,13 +28,34 @@ What you need before running the code.
 
 ## For Docker
 
-1. Copy the env.example to .env and edit to match whatever values you want to use.
-2. Run `docker-compose build` and `docker-compose up -d`. Or simply `docker-compose up`.
+1. Pull image 
+```
+docker pull archnoob/tanzania-locations-db
+```
 
+2. After pulling the image, create a .env file based on the provided template:
+```
+cp env.example .env
+```
+3. Run with Docker Compose (Recommended)
+```
+docker-compose up -d
+```
+4. Or run mannually (with env vars)
+```
+docker run -d \
+  --name tanzania-locations \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=password \
+  -e POSTGRES_DB=locations \
+  archnoob/tanzania-locations-db
+```
 
 ### Credits
 
-Process of data standardization was the most complicated and I was helped by a few friends whom I promised to credit.
+A few folks made this happen, from standardizing the data to creating the
+database, writing the scripts and testing. Thank you all for your
+contributions.
 
 1. Natali Isuja
 2. Joe Master
