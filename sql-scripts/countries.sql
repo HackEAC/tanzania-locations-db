@@ -255,3 +255,9 @@ INSERT INTO countries (id, iso, name, nicename, iso3, numcode, phonecode) VALUES
 (251, 'MF', 'SAINT MARTIN', 'Saint Martin', 'MAF', 663, 590),
 (252, 'SX', 'SINT MAARTEN', 'Sint Maarten', 'SXM', 534, 1),
 (253, 'SS', 'SOUTH SUDAN', 'South Sudan', 'SSD', 728, 211);
+
+SELECT setval(
+  pg_get_serial_sequence('countries', 'id'),
+  (SELECT COALESCE(MAX(id), 1) FROM countries),
+  true
+);

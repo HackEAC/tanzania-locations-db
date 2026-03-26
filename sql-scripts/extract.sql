@@ -15,19 +15,25 @@ $$ LANGUAGE plpgsql;
 
 WITH 
   distinct_regions AS (
-    SELECT DISTINCT(region), country_id, regioncode, id FROM general
+    SELECT
+      regioncode,
+      MIN(region) AS region,
+      country_id,
+      MIN(id) AS id
+    FROM general
+    GROUP BY regioncode, country_id
 ),
   regions_save AS (
     SELECT save_regions(
-      F.regioncode,
-      F.region,
-      F.country_id,
-      F.id
+      r.regioncode,
+      r.region,
+      r.country_id,
+      r.id
     )
-    FROM distinct_regions AS F
+    FROM distinct_regions AS r
 )
 
-SELECT * FROM regions_save;
+SELECT COUNT(*) AS regions_saved FROM regions_save;
 
 CREATE OR REPLACE FUNCTION save_districts(d_code int, d_name text, region int, country int, general int) RETURNS void AS $$
     BEGIN
@@ -42,19 +48,26 @@ $$ LANGUAGE plpgsql;
 
 WITH 
   distinct_districts AS (
-    SELECT DISTINCT(district), districtcode, country_id, regioncode, id FROM general
+    SELECT
+      districtcode,
+      MIN(district) AS district,
+      country_id,
+      regioncode,
+      MIN(id) AS id
+    FROM general
+    GROUP BY districtcode, country_id, regioncode
 ),
   district_save AS (
     SELECT save_districts(
-      U.districtcode,
-      U.district,
-      U.regioncode,
-      U.country_id,
-      U.id
-    ) FROM distinct_districts AS U
+      d.districtcode,
+      d.district,
+      d.regioncode,
+      d.country_id,
+      d.id
+    ) FROM distinct_districts AS d
 )
 
-SELECT * FROM district_save;
+SELECT COUNT(*) AS districts_saved FROM district_save;
 
 CREATE OR REPLACE FUNCTION save_wards(w_code int, w_name text, district int, region int, country int, general int) RETURNS void AS $$
     BEGIN
@@ -69,22 +82,29 @@ $$ LANGUAGE plpgsql;
 
 WITH 
   distinct_wards AS (
-    SELECT DISTINCT(ward), wardcode, regioncode, districtcode, country_id, id
+    SELECT
+      wardcode,
+      MIN(ward) AS ward,
+      regioncode,
+      districtcode,
+      country_id,
+      MIN(id) AS id
     FROM general
+    GROUP BY wardcode, regioncode, districtcode, country_id
 ),
   ward_save AS (
     SELECT save_wards(
-      C.wardcode,
-      C.ward,
-      C.districtcode,
-      C.regioncode,
-      C.country_id,
-      C.id
+      w.wardcode,
+      w.ward,
+      w.districtcode,
+      w.regioncode,
+      w.country_id,
+      w.id
     ) 
-    FROM distinct_wards AS C
+    FROM distinct_wards AS w
 )
 
-SELECT * FROM ward_save;
+SELECT COUNT(*) AS wards_saved FROM ward_save;
   
 CREATE OR REPLACE FUNCTION save_places(place text, ward int, district int, region int, country int, general int) RETURNS void AS $$
     BEGIN
@@ -106,49 +126,67 @@ $$ LANGUAGE plpgsql;
 WITH 
   distinct_streets AS (
     SELECT 
-      DISTINCT(wardcode), 
+      wardcode,
       street,
       regioncode,
       districtcode,
       country_id,
-      id
+      MIN(id) AS id
     FROM general
-),
-  places_save_streets AS (
-    SELECT save_places(
-      K.street,
-      K.wardcode,
-      K.districtcode,
-      K.regioncode,
-      K.country_id,
-      K.id
-    ) FROM distinct_streets AS K
     WHERE street IS NOT NULL
-)
-
-SELECT * FROM places_save_streets;
-
-WITH
+    GROUP BY wardcode, street, regioncode, districtcode, country_id
+),
   distinct_places AS (
     SELECT 
-      DISTINCT(wardcode), 
+      wardcode,
       places,
       regioncode,
       districtcode,
       country_id,
-      id
+      MIN(id) AS id
     FROM general
-),
-  places_save_places AS (
-    SELECT save_places(
-      R.places,
-      R.wardcode,
-      R.districtcode,
-      R.regioncode,
-      R.country_id,
-      R.id
-    ) FROM distinct_places AS R
     WHERE places IS NOT NULL
+    GROUP BY wardcode, places, regioncode, districtcode, country_id
+  ),
+  combined_places AS (
+    SELECT
+      wardcode,
+      street AS place_name,
+      regioncode,
+      districtcode,
+      country_id,
+      id
+    FROM distinct_streets
+    UNION ALL
+    SELECT
+      wardcode,
+      places AS place_name,
+      regioncode,
+      districtcode,
+      country_id,
+      id
+    FROM distinct_places
+  ),
+  distinct_place_rows AS (
+    SELECT
+      wardcode,
+      place_name,
+      regioncode,
+      districtcode,
+      country_id,
+      MIN(id) AS id
+    FROM combined_places
+    GROUP BY wardcode, place_name, regioncode, districtcode, country_id
+  ),
+  places_save AS (
+    SELECT save_places(
+      p.place_name,
+      p.wardcode,
+      p.districtcode,
+      p.regioncode,
+      p.country_id,
+      p.id
+    ) FROM distinct_place_rows AS p
 )
 
-SELECT * FROM places_save_places;
+SELECT COUNT(*) AS places_saved FROM places_save;
